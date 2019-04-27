@@ -1,4 +1,6 @@
 package com.himanshu.tacos.model;
+import java.util.Date;
+
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -10,6 +12,10 @@ import lombok.*;
 
 @Data
 public class Order {
+	
+	private long id;
+	
+	private Date placedAt;
 	
 	@NotBlank(message="required field")
 	private String name;

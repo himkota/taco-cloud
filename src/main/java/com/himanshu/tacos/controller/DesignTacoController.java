@@ -1,5 +1,6 @@
 package com.himanshu.tacos.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -7,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.himanshu.tacos.data.IngredientRepository;
 import com.himanshu.tacos.model.Ingredient;
 import com.himanshu.tacos.model.Ingredient.Type;
 import com.himanshu.tacos.model.Taco;
@@ -24,23 +27,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/design")
+@SessionAttributes("order")
 public class DesignTacoController {
+	
+	private final IngredientRepository ingredientRepo;
+	
+	@Autowired
+	public DesignTacoController (IngredientRepository ingredientRepo) {
+		this.ingredientRepo = ingredientRepo;
+	}
 	
 	@GetMapping
 	public String showDesignForm(Model model) {
 		log.info("Inside the controller ");
-		List<Ingredient> ingredients = Arrays.asList(
-				new Ingredient("FLTO", "Floar Tortilla", Type.WRAP),
-				new Ingredient("COTO", "Corn Tortilla", Type.WRAP),
-				new Ingredient("CARN", "Carnitas", Type.PROTEIN),
-				new Ingredient("BEAN", "Black Beans", Type.PROTEIN),
-				new Ingredient("TMTO", "Tomato", Type.VEGGIES),
-				new Ingredient("LETC", "Lettuce", Type.VEGGIES),
-				new Ingredient("CHED", "Cheddar", Type.CHEESE),
-				new Ingredient("Jack", "Monterry Jack", Type.CHEESE),
-				new Ingredient("SLSA", "salsa", Type.SAUCE),
-				new Ingredient("SRCR", "sour cream", Type.SAUCE)
-				); 
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
+		
+		ingredientRepo.findAll().forEach(i -> ingredients.add(i));
 		
 		Type[] types = Ingredient.Type.values();
 		for (Type type : types) {

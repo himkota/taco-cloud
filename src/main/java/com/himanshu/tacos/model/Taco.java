@@ -1,5 +1,6 @@
 package com.himanshu.tacos.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -10,10 +11,12 @@ import lombok.Data;
 @Data
 public class Taco {
 	
+	private long id;
+	
+	private Date createdAt;
+	
 	@NotNull
-	@Size(min=5, message="Name should not be less than 5 characters please")
 	private String name;
 	
-	@Size(min=1, message="Atleast select one ingredient please")
-	private List<String> ingredients;
+	private List<Ingredient> ingredients;
 }
